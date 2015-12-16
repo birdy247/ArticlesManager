@@ -1,0 +1,22 @@
+{
+    "name": "birdy247/articlesmanager",
+    "description": "ArticlesManager plugin for CakePHP",
+    "type": "cakephp-plugin",
+    "require": {
+        "php": ">=5.4.16"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "*"
+    },
+    "autoload": {
+        "psr-4": {
+            "ArticlesManager\\": "src"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "ArticlesManager\\Test\\": "tests",
+            "Cake\\Test\\": "./vendor/cakephp/cakephp/tests"
+        }
+    }
+}
