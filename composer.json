@@ -3,7 +3,9 @@
     "description": "ArticlesManager plugin for CakePHP",
     "type": "cakephp-plugin",
     "require": {
-        "php": ">=5.4.16"
+        "php": ">=5.4.16",
+        "davidyell/proffer": "~0.6",
+        "muffin/footprint": "dev-master"
     },
     "require-dev": {
         "phpunit/phpunit": "*"
