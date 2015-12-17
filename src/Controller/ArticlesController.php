@@ -59,6 +59,7 @@ class ArticlesController extends AppController {
         $articles->order(['Articles.created' => 'DESC']);
         $articles = $this->paginate($articles);
 
+
         $this->set(compact('articles', 'section', 'extension'));
         $this->set('_serialize', ['articles', 'section']);
     }
@@ -70,7 +71,7 @@ class ArticlesController extends AppController {
      * @return void
      * @throws \Cake\Network\Exception\NotFoundException When record not found.
      */
-    public function view($slug = null) {
+    public function view($slug = null, $id = null) {
 
         if (!$slug) {
             throw new NotFoundException('Could not find content');
@@ -84,7 +85,13 @@ class ArticlesController extends AppController {
 
         $this->viewBuilder()->layout('news');
 
-        $article = $this->Articles->find('slug', ['slug' => $slug])
+        $article = $this->Articles->find();
+        if ($id) {
+            $article->where(['Articles.id' => $id]);
+        } else {
+            $article->find('slug', ['slug' => $slug])->find('active');
+        }
+        $article = $article
                 ->contain(['Tags'])
                 ->contain(['Sections.Formations'])
                 ->contain(['Creators'])
@@ -114,7 +121,7 @@ class ArticlesController extends AppController {
 
             $redirect = ['action' => 'admin'];
 
-            //If previewing, force this to be an un-published article
+//If previewing, force this to be an un-published article
             if ($this->request->data['preview']) {
                 $this->request->data['active'] = 0;
                 $this->request->data['preview'] = 1;
@@ -123,10 +130,10 @@ class ArticlesController extends AppController {
 
             $article = $this->Articles->patchEntity($article, $this->request->data, ['reference' => false]);
 
-            //Pass in an option of publish.  If this is set to true, then unpublish all other versions of this article
+//Pass in an option of publish.  If this is set to true, then unpublish all other versions of this article
             if ($this->Articles->save($article, ['publish' => $this->request->data['active']])) {
                 $this->Flash->success(__('The article has been saved.'));
-                return $this->redirect($preview ? ['controller' => 'Articles', 'action' => 'view', $article->id, '?' => ['preview' => true]] : $redirect);
+                return $this->redirect($preview ? ['controller' => 'Articles', 'action' => 'view', $article->slug, $article->id, '?' => ['preview' => true]] : $redirect);
             } else {
                 $this->Flash->error(__('The article could not be saved. Please, try again.'));
             }
@@ -148,7 +155,7 @@ class ArticlesController extends AppController {
     public function edit($id = null) {
         $this->viewBuilder()->layout('admin');
 
-        //If this has a uuid, pass it back to the add
+//If this has a uuid, pass it back to the add
 
         $preview = false;
 
@@ -165,7 +172,7 @@ class ArticlesController extends AppController {
 
             $redirect = ['action' => 'admin'];
 
-            //If previewing, force this to be an un-published article
+//If previewing, force this to be an un-published article
             if ($this->request->data['preview']) {
                 $this->request->data['active'] = 0;
                 $preview = true;
@@ -175,7 +182,7 @@ class ArticlesController extends AppController {
 
             if ($this->Articles->save($article, ['publish' => $this->request->data['active']])) {
                 $this->Flash->success(__('The article has been saved.'));
-                return $this->redirect($preview ? ['controller' => 'Articles', 'action' => 'view', $article->id, '?' => ['preview' => true]] : $redirect);
+                return $this->redirect($preview ? ['controller' => 'Articles', 'action' => 'view', $article->slug, $article->id, '?' => ['preview' => true]] : $redirect);
             } else {
                 $this->Flash->error(__('The article could not be saved. Please, try again.'));
             }
@@ -228,7 +235,7 @@ class ArticlesController extends AppController {
     public function imageUpload() {
         $this->viewBuilder()->layout(false);
 
-        //Check if image has been uploaded
+//Check if image has been uploaded
         if (!empty($this->request->data['upload']['name'])) {
 
             $v = $this->Articles->validator('image');

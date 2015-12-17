@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Copyright (c) Cake Software Foundation, Inc. (http://cakefoundation.org)
  *
@@ -10,6 +11,8 @@
  * @link          http://cakephp.org CakePHP(tm) Project
  * @license       http://www.opensource.org/licenses/mit-license.php MIT License
  */
-
 use Cake\Core\Plugin;
 
+Plugin::load('Tools', array('bootstrap' => true));
+Plugin::load('Proffer');
+Plugin::load('Muffin/Footprint');

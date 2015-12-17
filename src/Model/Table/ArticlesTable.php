@@ -35,7 +35,7 @@ class ArticlesTable extends Table {
         $this->addBehavior('Timestamp');
         $this->addBehavior('Muffin/Footprint.Footprint');
 
-        $this->addBehavior('ArticlesManager.Slugged', [
+        $this->addBehavior('Tools.Slugged', [
             'field' => 'slug',
             'overwriteField' => 'overwrite_slug',
             'mode' => 'url',
@@ -290,6 +290,7 @@ class ArticlesTable extends Table {
                 return $q;
             }
                 ])
+                ->distinct(['Articles.slug'])
                 ->order(['Sections.name' => 'ASC', 'Articles.name' => 'ASC']);
 
 
