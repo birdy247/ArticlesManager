@@ -83,7 +83,10 @@ class OccasionsController extends AppController {
                 $this->Flash->error(__('The occasion could not be saved. Please, try again.'));
             }
         }
-        $this->set(compact('occasion'));
+        
+        $articles = $this->Occasions->Articles->getArticlesList(true);
+        
+        $this->set(compact('occasion', 'articles'));
         $this->set('_serialize', ['occasion']);
     }
 

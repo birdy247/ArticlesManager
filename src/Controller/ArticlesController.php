@@ -172,7 +172,7 @@ class ArticlesController extends AppController {
 
             $redirect = ['action' => 'admin'];
 
-//If previewing, force this to be an un-published article
+            //If previewing, force this to be an un-published article
             if ($this->request->data['preview']) {
                 $this->request->data['active'] = 0;
                 $preview = true;
@@ -187,9 +187,19 @@ class ArticlesController extends AppController {
                 $this->Flash->error(__('The article could not be saved. Please, try again.'));
             }
         }
+
+        //Get all other articles
+        $articles = $this->Articles->find()
+                ->where(function ($exp, $q) use($id) {
+                    return $exp->notIn('Articles.id', [$id]);
+                })
+                ->where(['Articles.reference' => $article->reference])
+                ->contain(['Creators'])
+                ->order(['Articles.modified' => 'DESC']);
+
         $tags = $this->Articles->Tags->find('list', ['limit' => 200]);
         $sections = $this->Articles->Sections->find('list', ['limit' => 200]);
-        $this->set(compact('article', 'tags', 'sections'));
+        $this->set(compact('article', 'tags', 'sections', 'articles'));
         $this->set('_serialize', ['article']);
     }
 
