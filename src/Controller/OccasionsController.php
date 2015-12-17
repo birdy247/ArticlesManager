@@ -3,6 +3,8 @@
 namespace ArticlesManager\Controller;
 
 use ArticlesManager\Controller\AppController;
+use Cake\ORM\TableRegistry;
+
 
 /**
  * Occasions Controller
@@ -55,7 +57,7 @@ class OccasionsController extends AppController {
             }
         }
 
-        $articles = $this->Occasions->Articles->getArticlesList(true);
+        $articles = TableRegistry::get('ArticlesManager.Articles')->getArticlesList(true);
 
         $this->set(compact('occasion', 'articles'));
         $this->set('_serialize', ['occasion']);
@@ -84,7 +86,7 @@ class OccasionsController extends AppController {
             }
         }
         
-        $articles = $this->Occasions->Articles->getArticlesList(true);
+        $articles = TableRegistry::get('ArticlesManager.Articles')->getArticlesList(true);
         
         $this->set(compact('occasion', 'articles'));
         $this->set('_serialize', ['occasion']);
