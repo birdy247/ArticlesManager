@@ -15,7 +15,7 @@ use Cake\Network\Exception\NotFoundException;
 class ArticlesController extends AppController {
 
     public $paginate = [
-        'limit' => 5,
+        'limit' => 20,
     ];
 
     public function beforeFilter(Event $event) {
