@@ -28,7 +28,7 @@ class OccasionCell extends Cell {
         $occasionsTable = TableRegistry::get('ArticlesManager.Occasions');
         $occasions = $occasionsTable
                 ->find('active')
-                ->order(['Occasions.date_from' => 'DESC'])
+                ->order(['Occasions.date_from' => 'ASC'])
                 ->limit($items);
 
         $this->set(compact('occasions'));
