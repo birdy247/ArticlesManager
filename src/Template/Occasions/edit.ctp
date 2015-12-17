@@ -17,7 +17,6 @@
         echo $this->Form->input('name');
         echo $this->Form->input('date_from');
         echo $this->Form->input('date_to');
-        echo $this->Form->input('description');
         ?>
     </fieldset>
     <?= $this->Form->button(__('Submit')) ?>

@@ -73,10 +73,6 @@ class OccasionsTable extends Table {
                 ->notEmpty('date_to');
 
         $validator
-                ->requirePresence('description', 'create')
-                ->notEmpty('description');
-
-        $validator
                 ->requirePresence('photo', false)
                 ->allowEmpty('photo', true);
 
