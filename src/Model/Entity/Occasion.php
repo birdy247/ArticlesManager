@@ -1,7 +1,9 @@
 <?php
+
 namespace ArticlesManager\Model\Entity;
 
 use Cake\ORM\Entity;
+use Cake\ORM\TableRegistry;
 
 /**
  * Occasion Entity.
@@ -11,8 +13,7 @@ use Cake\ORM\Entity;
  * @property \Cake\I18n\Time $date
  * @property string $description
  */
-class Occasion extends Entity
-{
+class Occasion extends Entity {
 
     /**
      * Fields that can be mass assigned using newEntity() or patchEntity().
@@ -27,4 +28,14 @@ class Occasion extends Entity
         '*' => true,
         'id' => false,
     ];
+    protected $_virtual = ['article'];
+
+    //Lazy loading of article
+    protected function _getArticle() {
+        if (!empty($this->article_reference)) {
+            $articlesTable = TableRegistry::get('ArticlesManager.Articles');
+            return $articlesTable->find('reference', ['reference' => $this->article_reference])->find('active')->first();
+        }
+    }
+
 }

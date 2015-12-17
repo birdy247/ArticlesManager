@@ -27,11 +27,6 @@ class OccasionsTable extends Table {
         $this->displayField('name');
         $this->primaryKey('id');
 
-        $this->belongsTo('Articles', [
-            'foreignKey' => 'article_id',
-            'className' => 'ArticlesManager.Articles'
-        ]);
-
         $this->addBehavior('Proffer.Proffer', [
             'photo' => [    // The name of your upload field
                 'root' => WWW_ROOT . 'files', // Customise the root upload folder here, or omit to use the default
@@ -88,10 +83,4 @@ class OccasionsTable extends Table {
         $query->where(['Occasions.active' => 1]);
         return $query;
     }
-
-    public function findArticles(Query $query, array $options) {
-        $query->contain(['Articles']);
-        return $query;
-    }
-
 }

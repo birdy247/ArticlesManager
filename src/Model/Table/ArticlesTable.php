@@ -271,8 +271,8 @@ class ArticlesTable extends Table {
     //
     //
     
-        /**
-     * Returns a list of races (grouped by event) for a given organiser
+     /**
+     * Returns a list of articles (grouped by section) for a given organiser
      * 
      * @param type $organiserId - The organiser ID for whom we are looking for races
      * @param type $exclude - Items to exclude from the list
@@ -281,7 +281,7 @@ class ArticlesTable extends Table {
     public function getArticlesList($sectionGroup = true) {
         //Get a list of Races that can be used in the series
         $articles = $this->find('list', [
-                    'keyField' => 'id',
+                    'keyField' => 'reference',
                     'valueField' => 'article_name',
                     'groupField' => 'section_name'
                 ])
@@ -290,7 +290,7 @@ class ArticlesTable extends Table {
                 return $q;
             }
                 ])
-                ->distinct(['Articles.slug'])
+                ->distinct(['Articles.reference'])
                 ->order(['Sections.name' => 'ASC', 'Articles.name' => 'ASC']);
 
 
@@ -300,7 +300,7 @@ class ArticlesTable extends Table {
         ]);
         $articles
                 ->select([
-                    'id' => $articles->func()->concat(['Articles.id' => 'literal'])
+                    'reference' => $articles->func()->concat(['Articles.reference' => 'literal'])
         ]);
         $articles
                 ->select([
