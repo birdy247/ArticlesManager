@@ -82,4 +82,14 @@ class SectionsTable extends Table {
         return true;
     }
 
+    public function findActive(Query $query, array $options) {
+        $query->where(['Sections.active' => 1]);
+        return $query;
+    }
+
+    public function findMenu(Query $query, array $options) {
+        $query->where(['Sections.menu' => 1]);
+        return $query;
+    }
+
 }
