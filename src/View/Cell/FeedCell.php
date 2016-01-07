@@ -23,17 +23,17 @@ class FeedCell extends Cell {
      *
      * @return void
      */
-    public function display($items = 5) {
+    public function display($sectionId = 1, $items = 5) {
         $articlesTable = TableRegistry::get('ArticlesManager.Articles');
         $articles = $articlesTable
-                ->find('all')
                 ->find('active')
+                ->find('section', ['section_id' => $sectionId])
                 ->order(['Articles.created' => 'DESC'])
                 ->limit($items);
 
         $this->set(compact('articles'));
     }
-    
+
     /**
      * Default display method.
      *
