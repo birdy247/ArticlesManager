@@ -38,7 +38,8 @@ class SectionsTable extends Table {
 
         $this->hasMany('Articles', [
             'foreignKey' => 'section_id',
-            'className' => 'ArticlesManager.Articles'
+            'className' => 'ArticlesManager.Articles',
+            'dependent' => true
         ]);
     }
 
@@ -75,7 +76,7 @@ class SectionsTable extends Table {
     }
 
     public function beforeDelete(Event $event, Entity $entity, ArrayObject $options) {
-        $articles = $this->Articles->find('section', ['section_id' => $entity->id])->count();
+        $articles = $this->Articles->find('section', ['section_id' => $entity->id])->find('active')->count();
         if ($articles) {
             return false;
         }
