@@ -23,7 +23,7 @@ class OccasionCell extends Cell {
      *
      * @return void
      */
-    public function display($items = 5) {
+    public function display($items = 30) {
         $this->loadModel('Occasions');
         $occasionsTable = TableRegistry::get('ArticlesManager.Occasions');
         $occasions = $occasionsTable
