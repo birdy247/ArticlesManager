@@ -29,7 +29,7 @@ class ArticlesController extends AppController {
      * @return void
      */
     public function index($sectionId = null, $tagId = false) {
-        $this->viewBuilder()->layout('news');
+        //$this->viewBuilder()->layout('news');
 
         if (!$sectionId) {
             throw new NotFoundException('Could not find section');
@@ -83,7 +83,7 @@ class ArticlesController extends AppController {
             $preview = true;
         }
 
-        $this->viewBuilder()->layout('news');
+        //$this->viewBuilder()->layout('news');
 
         $article = $this->Articles->find();
         if ($id) {

@@ -4,9 +4,9 @@
     "type": "cakephp-plugin",
     "require": {
         "php": ">=5.4.16",
-        "davidyell/proffer": "~0.6",
-        "muffin/footprint": "dev-master",
-        "dereuromark/cakephp-tools": "dev-master"
+        "davidyell/proffer": "~0.7",
+        "muffin/footprint": "~1.0",
+        "dereuromark/cakephp-tools": "~1.0"
     },
     "require-dev": {
         "phpunit/phpunit": "*"

@@ -4,3 +4,4 @@
 /logs/*
 composer.lock
 /nbproject
+/config/Migrations/schema-dump-default.lock
