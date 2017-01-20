@@ -1,25 +1,31 @@
 {
-    "name": "birdy247/articlesmanager",
-    "description": "ArticlesManager plugin for CakePHP",
-    "type": "cakephp-plugin",
-    "require": {
-        "php": ">=5.4.16",
-        "davidyell/proffer": "~0.7",
-        "muffin/footprint": "~1.0",
-        "dereuromark/cakephp-tools": "~1.0"
-    },
-    "require-dev": {
-        "phpunit/phpunit": "*"
-    },
-    "autoload": {
-        "psr-4": {
-            "ArticlesManager\\": "src"
-        }
-    },
-    "autoload-dev": {
-        "psr-4": {
-            "ArticlesManager\\Test\\": "tests",
-            "Cake\\Test\\": "./vendor/cakephp/cakephp/tests"
-        }
+  "name": "birdy247/articlesmanager",
+  "description": "ArticlesManager plugin for CakePHP",
+  "type": "cakephp-plugin",
+  "repositories": [
+    {
+      "url": "https://github.com/birdy247/CakePHP3-Proffer.git",
+      "type": "git"
     }
+  ],
+  "require": {
+    "php": ">=5.4.16",
+    "davidyell/proffer": "develop",
+    "muffin/footprint": "~1.0",
+    "dereuromark/cakephp-tools": "~1.0"
+  },
+  "require-dev": {
+    "phpunit/phpunit": "*"
+  },
+  "autoload": {
+    "psr-4": {
+      "ArticlesManager\\": "src"
+    }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "ArticlesManager\\Test\\": "tests",
+      "Cake\\Test\\": "./vendor/cakephp/cakephp/tests"
+    }
+  }
 }
