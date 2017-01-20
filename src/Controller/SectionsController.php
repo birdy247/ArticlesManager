@@ -10,14 +10,17 @@ use Cake\Event\Event;
  *
  * @property \ArticlesManager\Model\Table\SectionsTable $Sections
  */
-class SectionsController extends AppController {
+class SectionsController extends AppController
+{
 
-    public function beforeFilter(Event $event) {
+    public function beforeFilter(Event $event)
+    {
         parent::beforeFilter($event);
         $this->Auth->deny();
     }
 
-    public function admin() {
+    public function admin()
+    {
         $this->viewBuilder()->layout('admin');
         $this->set('sections', $this->paginate($this->Sections));
         $this->set('_serialize', ['sections']);
@@ -30,7 +33,8 @@ class SectionsController extends AppController {
      * @return void
      * @throws \Cake\Network\Exception\NotFoundException When record not found.
      */
-    public function view($id = null) {
+    public function view($id = null)
+    {
         $section = $this->Sections->get($id, [
             'contain' => ['Formations']
         ]);
@@ -43,7 +47,8 @@ class SectionsController extends AppController {
      *
      * @return void Redirects on successful add, renders view otherwise.
      */
-    public function add() {
+    public function add()
+    {
         $this->viewBuilder()->layout('admin');
         $section = $this->Sections->newEntity();
         if ($this->request->is('post')) {
@@ -56,7 +61,8 @@ class SectionsController extends AppController {
             }
         }
         $formations = $this->Sections->Formations->find('list', ['limit' => 200]);
-        $this->set(compact('section', 'formations'));
+        $additions = $this->Sections->Additions->find('list', ['limit' => 200]);
+        $this->set(compact('section', 'formations', 'additions'));
         $this->set('_serialize', ['section']);
     }
 
@@ -67,7 +73,8 @@ class SectionsController extends AppController {
      * @return void Redirects on successful edit, renders view otherwise.
      * @throws \Cake\Network\Exception\NotFoundException When record not found.
      */
-    public function edit($id = null) {
+    public function edit($id = null)
+    {
         $this->viewBuilder()->layout('admin');
         $section = $this->Sections->get($id, [
             'contain' => []
@@ -82,7 +89,8 @@ class SectionsController extends AppController {
             }
         }
         $formations = $this->Sections->Formations->find('list', ['limit' => 200]);
-        $this->set(compact('section', 'formations'));
+        $additions = $this->Sections->Additions->find('list', ['limit' => 200]);
+        $this->set(compact('section', 'formations', 'additions'));
         $this->set('_serialize', ['section']);
     }
 
@@ -93,7 +101,8 @@ class SectionsController extends AppController {
      * @return void Redirects to index.
      * @throws \Cake\Network\Exception\NotFoundException When record not found.
      */
-    public function delete($id = null) {
+    public function delete($id = null)
+    {
         $this->request->allowMethod(['post', 'delete']);
         $section = $this->Sections->get($id);
         if ($this->Sections->delete($section)) {

@@ -8,7 +8,8 @@ use Cake\ORM\TableRegistry;
 /**
  * Feed cell
  */
-class FeedCell extends Cell {
+class FeedCell extends Cell
+{
 
     /**
      * List of valid options that can be passed into this
@@ -23,15 +24,24 @@ class FeedCell extends Cell {
      *
      * @return void
      */
-    public function display($sectionId = 1, $items = 5) {
+    public function articles($sectionId = 1, $items = 5, $excludeIds = [])
+    {
         $articlesTable = TableRegistry::get('ArticlesManager.Articles');
         $articles = $articlesTable
-                ->find('active')
-                ->find('section', ['section_id' => $sectionId])
-                ->order(['Articles.created' => 'DESC'])
-                ->limit($items);
+            ->find('active')
+            ->find('section', ['section_id' => $sectionId]);
 
-        $this->set(compact('articles'));
+        if (!empty($excludeIds)) {
+            $articles->where(['Articles.id NOT IN' => $excludeIds]);
+        }
+
+        $articles->contain(['ArticleImages'])
+            ->order(['Articles.created' => 'DESC'])
+            ->limit($items);
+
+
+
+        $this->set(compact('articles', 'items'));
     }
 
     /**
@@ -39,12 +49,21 @@ class FeedCell extends Cell {
      *
      * @return void
      */
-    public function popular() {
+    public function tags()
+    {
         $this->loadModel('Tags');
         $tags = $this->Tags
-                ->find('all');
+            ->find('all');
 
         $this->set(compact('tags'));
+    }
+
+    public function images()
+    {
+        $this->loadModel('ArticleImages');
+        $articleImages = $this->ArticleImages->find('all');
+
+        $this->set(compact('articleImages'));
     }
 
 }

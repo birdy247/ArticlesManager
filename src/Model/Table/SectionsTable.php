@@ -30,6 +30,13 @@ class SectionsTable extends Table {
         $this->displayField('name');
         $this->primaryKey('id');
 
+        $this->belongsToMany('Additions', [
+            'foreignKey' => 'section_id',
+            'targetForeignKey' => 'addition_id',
+            'joinTable' => 'additions_sections',
+            'className' => 'ArticlesManager.Additions'
+        ]);
+
         $this->belongsTo('Formations', [
             'foreignKey' => 'formation_id',
             'joinType' => 'INNER',

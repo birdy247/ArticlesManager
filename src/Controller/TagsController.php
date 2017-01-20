@@ -2,6 +2,7 @@
 namespace ArticlesManager\Controller;
 
 use ArticlesManager\Controller\AppController;
+use Cake\Event\Event;
 
 /**
  * Tags Controller
@@ -10,6 +11,13 @@ use ArticlesManager\Controller\AppController;
  */
 class TagsController extends AppController
 {
+
+
+    public function beforeFilter(Event $event)
+    {
+        parent::beforeFilter($event);
+        $this->Auth->deny();
+    }
 
     /**
      * Index method
