@@ -42,7 +42,11 @@ class ArticleImagesTable extends Table
             'image' => [
                 'dir' => 'image_dir',
                 'thumbnailSizes' => [
-                    'portfolio' => ['w' => 1140, 'h' => 450]
+                    'portfolio' => [
+                        'w' => 1140,
+                        'h' => 705,
+                        'fit' => true
+                    ]
                 ]
             ]
         ]);
