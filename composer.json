@@ -10,7 +10,7 @@
   ],
   "require": {
     "php": ">=5.4.16",
-    "davidyell/proffer": "develop",
+    "davidyell/proffer": "dev-develop",
     "muffin/footprint": "~1.0",
     "dereuromark/cakephp-tools": "~1.0"
   },
