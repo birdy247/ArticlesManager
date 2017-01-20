@@ -2,15 +2,8 @@
   "name": "birdy247/articlesmanager",
   "description": "ArticlesManager plugin for CakePHP",
   "type": "cakephp-plugin",
-  "repositories": [
-    {
-      "url": "https://github.com/birdy247/CakePHP3-Proffer.git",
-      "type": "git"
-    }
-  ],
   "require": {
     "php": ">=5.4.16",
-    "davidyell/proffer": "dev-develop",
     "muffin/footprint": "~1.0",
     "dereuromark/cakephp-tools": "~1.0"
   },
