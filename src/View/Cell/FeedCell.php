@@ -2,6 +2,8 @@
 
 namespace ArticlesManager\View\Cell;
 
+use Cake\Collection\Collection;
+use Cake\Datasource\ResultSetInterface;
 use Cake\View\Cell;
 use Cake\ORM\TableRegistry;
 
@@ -35,11 +37,24 @@ class FeedCell extends Cell
             $articles->where(['Articles.id NOT IN' => $excludeIds]);
         }
 
-        $articles->contain(['ArticleImages'])
+        $articles->contain(['ArticleImages', 'Additions', 'Creators'])
             ->order(['Articles.created' => 'DESC'])
-            ->limit($items);
+            ->limit($items)
+            ->formatResults(function (ResultSetInterface $results) {
+                return $results->map(function ($row) {
 
+                    $additions = (new Collection($row['additions']))->combine(
+                        'name',
+                        function ($entity) {
+                            return $entity;
+                        }
+                    )->toArray();
 
+                    $row['additions'] = $additions;
+
+                    return $row;
+                });
+            });
 
         $this->set(compact('articles', 'items'));
     }

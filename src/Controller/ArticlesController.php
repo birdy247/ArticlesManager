@@ -3,6 +3,7 @@
 namespace ArticlesManager\Controller;
 
 use ArticlesManager\Controller\AppController;
+use Cake\Datasource\ResultSetInterface;
 use Cake\Event\Event;
 use Cake\Core\Configure;
 use Cake\Network\Exception\NotFoundException;
@@ -52,7 +53,22 @@ class ArticlesController extends AppController
 
         $articles = $this->Articles
             ->find('active')
-            ->contain(['Creators', 'ArticleImages']);
+            ->contain(['Creators', 'ArticleImages', 'Additions'])
+            ->formatResults(function (ResultSetInterface $results) {
+                return $results->map(function ($row) {
+
+                    $additions = (new Collection($row['additions']))->combine(
+                        'name',
+                        function ($entity) {
+                            return $entity;
+                        }
+                    )->toArray();
+
+                    $row['additions'] = $additions;
+
+                    return $row;
+                });
+            });
 
         if ($sectionId) {
             $articles->find('section', ['section_id' => $sectionId]);
