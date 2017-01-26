@@ -151,8 +151,6 @@ class ArticlesController extends AppController
     {
         $this->viewBuilder()->layout('admin');
 
-        $preview = false;
-
         $article = $this->Articles->newEntity([
             'section_id' => $sectionId
         ], [
@@ -199,10 +197,6 @@ class ArticlesController extends AppController
     {
         $this->viewBuilder()->layout('admin');
 
-//If this has a uuid, pass it back to the add
-
-        $preview = false;
-
         $article = $this->Articles->get($id, [
             'contain' => ['Tags', 'Sections.Additions', 'Additions', 'ArticleImages']
         ]);
@@ -210,11 +204,6 @@ class ArticlesController extends AppController
         if ($this->request->is(['patch', 'post', 'put'])) {
 
             $redirect = ['action' => 'admin'];
-
-            //If previewing, force this to be an un-published article
-            if ($this->request->data['preview']) {
-                $preview = true;
-            }
 
             $article = $this->Articles->patchEntity($article, $this->request->data, ['associated' => [
                 'Additions', 'ArticleImages', 'Tags'
@@ -225,7 +214,7 @@ class ArticlesController extends AppController
             ]])
             ) {
                 $this->Flash->success(__('The article has been saved.'));
-                return $this->redirect($preview ? ['controller' => 'Articles', 'action' => 'view', $article->slug, $article->id, '?' => ['preview' => true]] : $redirect);
+                return $this->redirect($redirect);
             } else {
                 $this->Flash->error(__('The article could not be saved. Please, try again.'));
             }
