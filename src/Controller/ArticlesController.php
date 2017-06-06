@@ -152,6 +152,8 @@ class ArticlesController extends AppController
     {
         $this->viewBuilder()->layout('admin');
 
+        $section = $this->Articles->Sections->get($sectionId);
+
         $article = $this->Articles->newEntity([
             'section_id' => $sectionId
         ], [
@@ -170,7 +172,7 @@ class ArticlesController extends AppController
             ]])
             ) {
                 $this->Flash->success(__('The article has been saved.'));
-                return $this->redirect(['controller' => 'Articles', 'action' => 'view', $article->slug, $article->id, '?' => ['preview' => true]]);
+                return $this->redirect(['controller' => 'Articles', 'action' => 'view', $article->id, $article->slug, $section->slug]);
             } else {
 
                 $this->Flash->error(__('The article could not be saved. Please, try again.'));
