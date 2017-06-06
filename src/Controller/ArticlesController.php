@@ -27,7 +27,7 @@ class ArticlesController extends AppController
         $this->Auth->deny(['add', 'edit', 'delete', 'admin', 'imageUpload']);
     }
 
-    public function isAuthorized($user)
+    public function isAuthorized($user = null)
     {
         return parent::isAuthorized($user);
     }
@@ -39,21 +39,26 @@ class ArticlesController extends AppController
      */
     public function index($sectionId = null, $tagId = false)
     {
-        //$this->viewBuilder()->layout('news');
 
-        if (!$sectionId) {
+        $sectionSlug = $this->request->getParam('sectionslug');
+
+        if (!$sectionSlug) {
             throw new NotFoundException('Could not find section');
         }
 
-        $section = $this->Articles->Sections->get($sectionId, [
-            'contain' => ['Formations']
-        ]);
+        $section = $this->Articles->Sections->find('slug', ['slug' => $sectionSlug])->contain(['Formations'])->firstOrFail();
 
         $extension = "Common/" . $section->formation->directory . "_index";
 
         $articles = $this->Articles
             ->find('active')
-            ->contain(['Creators', 'ArticleImages', 'Additions'])
+            ->find('section', ['section_id' => $section->id])
+            ->contain([
+                'Creators',
+                'ArticleImages',
+                'Additions',
+                'FeaturedImages'
+            ])
             ->formatResults(function (ResultSetInterface $results) {
                 return $results->map(function ($row) {
 
@@ -70,9 +75,6 @@ class ArticlesController extends AppController
                 });
             });
 
-        if ($sectionId) {
-            $articles->find('section', ['section_id' => $sectionId]);
-        }
 
         if ($tagId) {
             $articles->matching('Tags', function ($q) use ($tagId) {
@@ -83,7 +85,6 @@ class ArticlesController extends AppController
         $articles->contain('Tags');
         $articles->order(['Articles.created' => 'DESC']);
         $articles = $this->paginate($articles);
-
 
         $this->set(compact('articles', 'section', 'extension'));
         $this->set('_serialize', ['articles', 'section']);
@@ -96,10 +97,10 @@ class ArticlesController extends AppController
      * @return void
      * @throws \Cake\Network\Exception\NotFoundException When record not found.
      */
-    public function view($slug = null, $id = null)
+    public function view($id = null, $slug = null)
     {
 
-        if (!$slug) {
+        if (!$id) {
             throw new NotFoundException('Could not find content');
         }
 

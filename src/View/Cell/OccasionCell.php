@@ -8,7 +8,8 @@ use Cake\ORM\TableRegistry;
 /**
  * Occasion cell
  */
-class OccasionCell extends Cell {
+class OccasionCell extends Cell
+{
 
     /**
      * List of valid options that can be passed into this
@@ -23,13 +24,15 @@ class OccasionCell extends Cell {
      *
      * @return void
      */
-    public function display($items = 30) {
+    public function display($items = 30)
+    {
         $this->loadModel('Occasions');
         $occasionsTable = TableRegistry::get('ArticlesManager.Occasions');
         $occasions = $occasionsTable
-                ->find('active')
-                ->order(['Occasions.date_from' => 'ASC'])
-                ->limit($items);
+            ->find('active')
+            ->contain(['Articles.Sections'])
+            ->order(['Occasions.date_from' => 'ASC'])
+            ->limit($items);
 
         $this->set(compact('occasions'));
     }

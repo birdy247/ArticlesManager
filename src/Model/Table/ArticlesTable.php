@@ -68,7 +68,6 @@ class ArticlesTable extends Table
 
         $this->belongsTo('Sections', [
             'foreignKey' => 'section_id',
-            'joinType' => 'INNER',
             'className' => 'ArticlesManager.Sections'
         ]);
 
@@ -86,6 +85,12 @@ class ArticlesTable extends Table
         $this->hasMany('ArticleImages', [
             'className' => 'ArticlesManager.ArticleImages',
             'foreignKey' => 'article_id'
+        ]);
+
+        $this->hasOne('FeaturedImages', [
+            'className' => 'ArticlesManager.ArticleImages',
+            'foreignKey' => 'article_id',
+            'finder' => 'featured'
         ]);
 
     }
@@ -195,8 +200,8 @@ class ArticlesTable extends Table
     {
         if (!empty($data['article_images'])) {
             foreach ($data['article_images'] as $key => $articleImage) {
-                if(isset($articleImage['image'])){
-                    if($articleImage['image']['error'] == 4){
+                if (isset($articleImage['image'])) {
+                    if ($articleImage['image']['error'] == 4) {
                         unset($data['article_images'][$key]);
                     }
                 }

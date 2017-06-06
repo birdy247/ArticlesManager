@@ -15,7 +15,8 @@ use ArrayObject;
  * Sections Model
  *
  */
-class SectionsTable extends Table {
+class SectionsTable extends Table
+{
 
     /**
      * Initialize method
@@ -23,7 +24,8 @@ class SectionsTable extends Table {
      * @param array $config The configuration for the Table.
      * @return void
      */
-    public function initialize(array $config) {
+    public function initialize(array $config)
+    {
         parent::initialize($config);
 
         $this->table('sections');
@@ -56,33 +58,35 @@ class SectionsTable extends Table {
      * @param \Cake\Validation\Validator $validator Validator instance.
      * @return \Cake\Validation\Validator
      */
-    public function validationDefault(Validator $validator) {
+    public function validationDefault(Validator $validator)
+    {
         $validator
-                ->add('id', 'valid', ['rule' => 'numeric'])
-                ->allowEmpty('id', 'create');
+            ->add('id', 'valid', ['rule' => 'numeric'])
+            ->allowEmpty('id', 'create');
 
         $validator
-                ->requirePresence('name', 'create')
-                ->notEmpty('name');
+            ->requirePresence('name', 'create')
+            ->notEmpty('name');
 
         $validator
-                ->requirePresence('subtitle', 'create')
-                ->notEmpty('subtitle');
+            ->requirePresence('subtitle', 'create')
+            ->notEmpty('subtitle');
 
         $validator
-                ->add('num', 'valid', ['rule' => 'numeric'])
-                ->requirePresence('num', 'create')
-                ->notEmpty('num');
+            ->add('num', 'valid', ['rule' => 'numeric'])
+            ->requirePresence('num', 'create')
+            ->notEmpty('num');
 
         $validator
-                ->add('menu', 'valid', ['rule' => 'boolean'])
-                ->requirePresence('menu', 'create')
-                ->notEmpty('menu');
+            ->add('menu', 'valid', ['rule' => 'boolean'])
+            ->requirePresence('menu', 'create')
+            ->notEmpty('menu');
 
         return $validator;
     }
 
-    public function beforeDelete(Event $event, Entity $entity, ArrayObject $options) {
+    public function beforeDelete(Event $event, Entity $entity, ArrayObject $options)
+    {
         $articles = $this->Articles->find('section', ['section_id' => $entity->id])->find('active')->count();
         if ($articles) {
             return false;
@@ -90,13 +94,21 @@ class SectionsTable extends Table {
         return true;
     }
 
-    public function findActive(Query $query, array $options) {
-        $query->where(['Sections.active' => 1]);
+    public function findActive(Query $query, array $options)
+    {
+        $query->where([$this->getAlias() . '.active' => 1]);
         return $query;
     }
 
-    public function findMenu(Query $query, array $options) {
-        $query->where(['Sections.menu' => 1]);
+    public function findSlug(Query $query, array $options)
+    {
+        $query->where([$this->getAlias() . '.slug' => $options['slug']]);
+        return $query;
+    }
+
+    public function findMenu(Query $query, array $options)
+    {
+        $query->where([$this->getAlias() . '.menu' => 1]);
         return $query;
     }
 

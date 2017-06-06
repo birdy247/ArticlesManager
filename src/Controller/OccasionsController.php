@@ -57,7 +57,7 @@ class OccasionsController extends AppController {
             }
         }
 
-        $articles = TableRegistry::get('ArticlesManager.Articles')->getArticlesList(true);
+        $articles = TableRegistry::get('ArticlesManager.Articles')->find('list')->find('active')->order(['Articles.created' => 'DESC']);
 
         $this->set(compact('occasion', 'articles'));
         $this->set('_serialize', ['occasion']);
@@ -85,8 +85,8 @@ class OccasionsController extends AppController {
                 $this->Flash->error(__('The occasion could not be saved. Please, try again.'));
             }
         }
-        
-        $articles = TableRegistry::get('ArticlesManager.Articles')->getArticlesList(true);
+
+        $articles = TableRegistry::get('ArticlesManager.Articles')->find('list')->find('active')->order(['Articles.created' => 'DESC']);
         
         $this->set(compact('occasion', 'articles'));
         $this->set('_serialize', ['occasion']);

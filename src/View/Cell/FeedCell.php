@@ -28,9 +28,13 @@ class FeedCell extends Cell
      */
     public function articles($sectionId = 1, $items = 5, $excludeIds = [])
     {
+
         $articlesTable = TableRegistry::get('ArticlesManager.Articles');
-        $articles = $articlesTable
-            ->find('active')
+        $sectionTable = TableRegistry::get('ArticlesManager.Sections');
+
+        $section = $sectionTable->get($sectionId);
+
+        $articles = $articlesTable->find('active')
             ->find('section', ['section_id' => $sectionId]);
 
         if (!empty($excludeIds)) {
@@ -56,7 +60,8 @@ class FeedCell extends Cell
                 });
             });
 
-        $this->set(compact('articles', 'items'));
+
+        $this->set(compact('articles', 'items', 'section'));
     }
 
     /**
@@ -73,10 +78,10 @@ class FeedCell extends Cell
         $this->set(compact('tags'));
     }
 
-    public function images()
+    public function images($limit = 4)
     {
-        $this->loadModel('ArticleImages');
-        $articleImages = $this->ArticleImages->find('all');
+        $ArticlesImagesTable = TableRegistry::get('ArticlesManager.ArticleImages');
+        $articleImages = $ArticlesImagesTable->find('all')->contain(['Articles.Sections'])->limit($limit);
 
         $this->set(compact('articleImages'));
     }

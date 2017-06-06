@@ -12,7 +12,8 @@ use Cake\Validation\Validator;
  * Occasions Model
  *
  */
-class OccasionsTable extends Table {
+class OccasionsTable extends Table
+{
 
     /**
      * Initialize method
@@ -20,7 +21,8 @@ class OccasionsTable extends Table {
      * @param array $config The configuration for the Table.
      * @return void
      */
-    public function initialize(array $config) {
+    public function initialize(array $config)
+    {
         parent::initialize($config);
 
         $this->table('occasions');
@@ -40,6 +42,11 @@ class OccasionsTable extends Table {
                 'thumbnailMethod' => 'imagick'  // Options are Imagick, Gd or Gmagick
             ]
         ]);
+
+        $this->belongsTo('Articles', [
+            'foreignKey' => 'article_id',
+            'className' => 'ArticlesManager.Articles'
+        ]);
     }
 
     /**
@@ -48,38 +55,40 @@ class OccasionsTable extends Table {
      * @param \Cake\Validation\Validator $validator Validator instance.
      * @return \Cake\Validation\Validator
      */
-    public function validationDefault(Validator $validator) {
+    public function validationDefault(Validator $validator)
+    {
         $validator
-                ->add('id', 'valid', ['rule' => 'numeric'])
-                ->allowEmpty('id', 'create');
+            ->add('id', 'valid', ['rule' => 'numeric'])
+            ->allowEmpty('id', 'create');
 
         $validator
-                ->requirePresence('name', 'create')
-                ->notEmpty('name');
+            ->requirePresence('name', 'create')
+            ->notEmpty('name');
 
         $validator
-                ->add('date_from', 'valid', ['rule' => 'datetime'])
-                ->requirePresence('date_from', 'create')
-                ->notEmpty('date_from');
+            ->add('date_from', 'valid', ['rule' => 'datetime'])
+            ->requirePresence('date_from', 'create')
+            ->notEmpty('date_from');
 
         $validator
-                ->add('date_to', 'valid', ['rule' => 'datetime'])
-                ->requirePresence('date_to', 'create')
-                ->notEmpty('date_to');
+            ->add('date_to', 'valid', ['rule' => 'datetime'])
+            ->requirePresence('date_to', 'create')
+            ->notEmpty('date_to');
 
         $validator
-                ->requirePresence('photo', false)
-                ->allowEmpty('photo', true);
+            ->requirePresence('photo', false)
+            ->allowEmpty('photo', true);
 
         $validator
-                ->add('active', 'valid', ['rule' => 'boolean'])
-                ->requirePresence('active', 'create')
-                ->notEmpty('active');
+            ->add('active', 'valid', ['rule' => 'boolean'])
+            ->requirePresence('active', 'create')
+            ->notEmpty('active');
 
         return $validator;
     }
 
-    public function findActive(Query $query, array $options) {
+    public function findActive(Query $query, array $options)
+    {
         $query->where(['Occasions.active' => 1]);
         return $query;
     }

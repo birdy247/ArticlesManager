@@ -28,14 +28,4 @@ class Occasion extends Entity {
         '*' => true,
         'id' => false,
     ];
-    protected $_virtual = ['article'];
-
-    //Lazy loading of article
-    protected function _getArticle() {
-        if (!empty($this->article_reference)) {
-            $articlesTable = TableRegistry::get('ArticlesManager.Articles');
-            return $articlesTable->find('reference', ['reference' => $this->article_reference])->find('active')->first();
-        }
-    }
-
 }

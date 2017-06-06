@@ -1,4 +1,5 @@
 <?php
+
 namespace ArticlesManager\Model\Table;
 
 use Cake\ORM\Query;
@@ -34,9 +35,9 @@ class ArticleImagesTable extends Table
     {
         parent::initialize($config);
 
-        $this->table('article_images');
-        $this->displayField('id');
-        $this->primaryKey('id');
+        $this->setTable('article_images');
+        $this->setDisplayField('id');
+        $this->setPrimaryKey('id');
 
         $this->addBehavior('Proffer.Proffer', [
             'image' => [
@@ -71,8 +72,8 @@ class ArticleImagesTable extends Table
             ->allowEmpty('id', 'create');
 
         //$validator
-            //->requirePresence('image', 'create')
-            //->allowEmpty('image', 'update');
+        //->requirePresence('image', 'create')
+        //->allowEmpty('image', 'update');
 
         return $validator;
     }
@@ -90,4 +91,18 @@ class ArticleImagesTable extends Table
 
         return $rules;
     }
+
+    /**
+     * Finds the feature image for a given article
+     *
+     * @param Query $query
+     * @param array $options
+     * @return Query
+     */
+    public function findFeatured(Query $query, array $options)
+    {
+        $query->where([$this->getAlias() . '.featured']);
+        return $query;
+    }
+
 }
