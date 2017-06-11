@@ -54,9 +54,36 @@ class TagsTable extends Table
             ->notEmpty('name');
 
         $validator
+            ->requirePresence('slug', 'create')
+            ->notEmpty('slug')
+            ->add('slug', 'custom', [
+                'rule' => function ($value, $context)  {
+                    //Slug must only contain letters and a "-"
+                    if(!preg_match('/^[a-zA-Z-]+$/', $value)){
+                        return false;
+                    }
+                    return true;
+                },
+                'message' => 'The slug must only contain letters and -'
+            ]);
+
+        $validator
             ->requirePresence('description', 'create')
             ->notEmpty('description');
 
         return $validator;
+    }
+
+    /**
+     * Returns a rules checker object that will be used for validating
+     * application integrity.
+     *
+     * @param \Cake\ORM\RulesChecker $rules The rules object to be modified.
+     * @return \Cake\ORM\RulesChecker
+     */
+    public function buildRules(RulesChecker $rules)
+    {
+        $rules->add($rules->isUnique(['slug'], 'The slug must be unique'));
+        return $rules;
     }
 }

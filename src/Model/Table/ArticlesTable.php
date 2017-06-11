@@ -185,14 +185,6 @@ class ArticlesTable extends Table
     {
         $rules->add($rules->existsIn(['tag_id'], 'Tags'));
         $rules->add($rules->existsIn(['section_id'], 'Sections'));
-        // Add a rule that is applied for create and update operations
-        /*        $rules->add(function ($entity, $options) {
-                    return $this->isUniqueForReferenceRule($entity);
-                }, [
-                    'uniqueName',
-                    'errorField' => 'name',
-                    'message' => 'You cannot use the same name as another item of content'
-                ]);*/
         return $rules;
     }
 

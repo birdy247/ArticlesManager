@@ -6,7 +6,7 @@
                 ['action' => 'delete', $tag->id],
                 ['confirm' => __('Are you sure you want to delete # {0}?', $tag->id)]
             )
-        ?></li>
+            ?></li>
         <li><?= $this->Html->link(__('List Tags'), ['action' => 'index']) ?></li>
         <li><?= $this->Html->link(__('List Articles'), ['controller' => 'Articles', 'action' => 'index']) ?></li>
         <li><?= $this->Html->link(__('New Article'), ['controller' => 'Articles', 'action' => 'add']) ?></li>
@@ -17,8 +17,9 @@
     <fieldset>
         <legend><?= __('Edit Tag') ?></legend>
         <?php
-            echo $this->Form->input('name');
-            echo $this->Form->input('description');
+        echo $this->Form->input('name');
+        echo $this->Form->input('description');
+        echo $this->Form->input('slug');
         ?>
     </fieldset>
     <?= $this->Form->button(__('Submit')) ?>

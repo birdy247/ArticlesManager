@@ -18,7 +18,7 @@ class ArticlesController extends AppController
 {
 
     public $paginate = [
-        'limit' => 20,
+        'limit' => 25,
     ];
 
     public function beforeFilter(Event $event)
@@ -37,23 +37,27 @@ class ArticlesController extends AppController
      *
      * @return void
      */
-    public function index($sectionId = null, $tagId = false)
+    public function index($sectionSlug = null, $tagSlug = false)
     {
-
         $sectionSlug = $this->request->getParam('sectionslug');
 
         if (!$sectionSlug) {
             throw new NotFoundException('Could not find section');
         }
 
-        $section = $this->Articles->Sections->find('slug', ['slug' => $sectionSlug])->contain(['Formations'])->firstOrFail();
+        $section = $this->Articles->Sections->find('slug', ['slug' => $sectionSlug])->contain(['Formations'])->first();
 
-        $extension = "Common/" . $section->formation->directory . "_index";
+        $articles = $this->Articles->find('active');
 
-        $articles = $this->Articles
-            ->find('active')
-            ->find('section', ['section_id' => $section->id])
-            ->contain([
+        if($section){
+            $extension = "Common/" . $section->formation->directory . "_index";
+            $articles->find('section', ['section_id' => $section->id]);
+        }else{
+            $extension = "Common/index";
+            $articles->contain(['Sections']);
+        }
+
+        $articles->contain([
                 'Creators',
                 'ArticleImages',
                 'Additions',
@@ -76,15 +80,16 @@ class ArticlesController extends AppController
             });
 
 
-        if ($tagId) {
-            $articles->matching('Tags', function ($q) use ($tagId) {
-                return $q->where(['Tags.id' => $tagId]);
+        if ($tagSlug) {
+            $articles->matching('Tags', function ($q) use ($tagSlug) {
+                return $q->where(['Tags.slug' => $tagSlug]);
             });
         }
 
         $articles->contain('Tags');
         $articles->order(['Articles.created' => 'DESC']);
         $articles = $this->paginate($articles);
+
 
         $this->set(compact('articles', 'section', 'extension'));
         $this->set('_serialize', ['articles', 'section']);

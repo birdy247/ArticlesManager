@@ -102,6 +102,7 @@ class SectionsTable extends Table
 
     public function findSlug(Query $query, array $options)
     {
+        //All is a special case
         $query->where([$this->getAlias() . '.slug' => $options['slug']]);
         return $query;
     }

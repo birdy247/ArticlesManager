@@ -17,6 +17,10 @@
             <td><?= h($tag->name) ?></td>
         </tr>
         <tr>
+            <th><?= __('Slug') ?></th>
+            <td><?= $this->Number->format($tag->slug) ?></td>
+        </tr>
+        <tr>
             <th><?= __('Id') ?></th>
             <td><?= $this->Number->format($tag->id) ?></td>
         </tr>

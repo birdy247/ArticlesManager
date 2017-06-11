@@ -1,4 +1,5 @@
 <?php
+
 namespace ArticlesManager\View\Helper;
 
 use ArticlesManager\Model\Entity\Addition;
@@ -23,6 +24,7 @@ class AdditionsHelper extends Helper
 
     public function display(Addition $addition)
     {
+
         switch ($addition->data_type) {
             case "datetime":
                 $date = Time::parseDateTime($addition->_joinData->value);
